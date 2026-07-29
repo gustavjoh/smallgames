@@ -9,6 +9,9 @@ eller byggmiljö krävs för att spela.
 
 ## Innehåll
 
+- Emoji Memory – hitta flest par.
+- Emoji Stavning – stava enkla svenska emoji-ord för 3–6 år.
+
 - `index.html` – spelhyllan
 - `app.js` – navigation mellan spelen
 - `styles.css` – gemensam design
