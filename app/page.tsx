@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { games } from "../src/games/registry";
 
 type Difficulty = "easy" | "medium" | "hard";
 type Card = { id: number; emoji: string; matched: boolean };
@@ -30,6 +31,7 @@ function makeDeck(pairCount: number): Card[] {
 }
 
 export default function Home() {
+  const [view, setView] = useState<"hub" | "memory">("hub");
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [playerCount, setPlayerCount] = useState(1);
   const [started, setStarted] = useState(false);
@@ -70,6 +72,13 @@ export default function Home() {
     setFlipped([]);
   }
 
+  function returnToHub() {
+    setView("hub");
+    setStarted(false);
+    setWinnerVisible(false);
+    setFlipped([]);
+  }
+
   function handleCardClick(card: Card) {
     if (locked || card.matched || flipped.includes(card.id) || flipped.length === 2) return;
 
@@ -102,6 +111,38 @@ export default function Home() {
 
   const visibleCard = (card: Card) => card.matched || flipped.includes(card.id);
 
+  if (view === "hub") {
+    return (
+      <main className="game-shell">
+        <section className="game-card game-hub" aria-label="Smallgames spelhylla">
+          <header className="game-header">
+            <div className="brand-mark" aria-hidden="true"><span className="material-symbols-outlined">sports_esports</span></div>
+            <div><p className="eyebrow">VÄLJ ETT SPEL</p><h1>Smallgames</h1></div>
+          </header>
+          <div className="hub-intro">
+            <span className="material-symbols-outlined sparkle" aria-hidden="true">celebration</span>
+            <h2>Små spel, stor spelglädje.</h2>
+            <p>Välj en favorit och börja spela direkt. Fler spel dyker upp här allt eftersom.</p>
+          </div>
+          <div className="game-library">
+            {games.map((game) => (
+              <article className="game-tile" key={game.id} style={{ "--game-accent": game.accent } as CSSProperties}>
+                <span className="game-tile-icon" aria-hidden="true">{game.icon}</span>
+                <div><h2>{game.title}</h2><p>{game.description}</p></div>
+                <button className="play-tile-button" onClick={() => setView("memory")} aria-label={`Spela ${game.title}`}><span className="material-symbols-outlined" aria-hidden="true">play_arrow</span>Spela</button>
+              </article>
+            ))}
+            <article className="game-tile coming-soon" aria-label="Plats för nästa spel">
+              <span className="game-tile-icon" aria-hidden="true">✨</span>
+              <div><h2>Nästa spel</h2><p>En ledig plats för nästa enkla spel.</p></div>
+              <span className="soon-label">Snart</span>
+            </article>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="game-shell">
       <section className="game-card" aria-label="Memoryspel">
@@ -111,7 +152,7 @@ export default function Home() {
             <p className="eyebrow">SPELKVÄLL</p>
             <h1>Emoji Memory</h1>
           </div>
-          {started && <button className="icon-button" onClick={openSettings} aria-label="Ändra spelinställningar"><span className="material-symbols-outlined">settings</span></button>}
+          <button className="icon-button" onClick={returnToHub} aria-label="Till spelhyllan"><span className="material-symbols-outlined">home</span></button>
         </header>
 
         {!started ? (
