@@ -1,36 +1,20 @@
 # Smallgames
 
-En liten, snabb spelhylla för enkla spel i webbläsaren. Just nu finns **Emoji
-Memory**; fler spel kan läggas till utan att ändra själva spelhubben.
+En samling små spel som kör direkt i webbläsaren. Ingen installation, server
+eller byggmiljö krävs för att spela.
 
 ## Spela
 
-Den publicerade versionen finns på
-[gustavjoh.github.io/smallgames](https://gustavjoh.github.io/smallgames/).
+[Öppna Smallgames](https://gustavjoh.github.io/smallgames/)
 
-## Lokal utveckling
+## Innehåll
 
-Kräver Node.js 22 eller nyare.
+- `index.html` – spelhyllan
+- `app.js` – navigation mellan spelen
+- `styles.css` – gemensam design
+- `games/` – ett spel per mapp
 
-```bash
-npm install
-npm run dev
-```
+För att lägga till ett nytt spel skapas en ny mapp i `games/` med dess HTML-
+rendering och logik. Lägg sedan till spelets kort i `app.js`.
 
-Bygg en produktionsversion med `npm run build`.
-
-## Lägg till ett spel
-
-1. Lägg spelets komponent och logik i `src/games/<spel-namn>/`.
-2. Lägg till en post i `src/games/registry.ts` med titel, ikon, beskrivning och
-   färg.
-3. Koppla spelet från spelhubben i `app/page.tsx`.
-
-Varje spel ska hålla sin egen status lokalt och fungera med tangentbord och
-mobilskärm.
-
-## Publicering
-
-Varje push till `main` bygger den statiska sidan och publicerar den automatiskt
-via GitHub Pages. Arbetsflödet finns i
-`.github/workflows/deploy-pages.yml`.
+GitHub Pages publicerar filerna direkt från `main`.
