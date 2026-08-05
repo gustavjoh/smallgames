@@ -9,8 +9,9 @@ eller byggmiljö krävs för att spela.
 
 ## Innehåll
 
-- Emoji Memory – hitta flest par.
-- Emoji Stavning – stava enkla svenska emoji-ord för 3–6 år.
+- Memory – hitta flest par.
+- Stavning – stava enkla svenska emoji-ord för 3–6 år.
+- Räkna – räkna emojier och välj rätt siffra.
 
 - `index.html` – spelhyllan
 - `app.js` – navigation mellan spelen

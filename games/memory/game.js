@@ -8,7 +8,7 @@ const deck = (pairs) => shuffle(emojis.slice(0, pairs).flatMap((emoji, index) =>
 export function memoryGame(app, hub) {
   let level = "easy", players = 1, cards = [], flipped = [], scores = [], current = 0, locked = false;
   const renderSetup = () => {
-    app.innerHTML = `<section class="shell"><header><span class="logo material-symbols-outlined">extension</span><div><p>SPELKVÄLL</p><h1>Emoji Memory</h1></div><button class="icon-btn material-symbols-outlined" data-home aria-label="Till spelhyllan">home</button></header>
+    app.innerHTML = `<section class="shell"><header><span class="logo material-symbols-outlined">extension</span><div><p>SPELKVÄLL</p><h1>Memory</h1></div><button class="icon-btn material-symbols-outlined" data-home aria-label="Till spelhyllan">home</button></header>
       <div class="setup"><div class="intro"><span class="material-symbols-outlined">auto_awesome</span><h2>Hitta alla par</h2><p>Välj utmaning och antal spelare. Redo att testa minnet?</p></div>
       <fieldset><legend>Svårighetsgrad</legend><div class="choices">${Object.entries(levels).map(([key, [name, size]]) => `<button class="${level === key ? "selected" : ""}" data-level="${key}"><strong>${name}</strong><small>${size}</small></button>`).join("")}</div></fieldset>
       <fieldset><legend>Antal spelare</legend><div class="choices players">${[1,2,3,4].map(n => `<button class="${players === n ? "selected" : ""}" data-players="${n}"><span class="material-symbols-outlined">group</span><strong>${n}</strong></button>`).join("")}</div></fieldset>
@@ -21,7 +21,7 @@ export function memoryGame(app, hub) {
   const start = () => { cards = deck(levels[level][2]); flipped = []; scores = Array(players).fill(0); current = 0; locked = false; renderGame(); };
   const renderGame = () => {
     const scoreHtml = scores.map((score, i) => `<div class="score ${current === i ? "active" : ""}" style="--color:${colors[i]}"><span>Spelare ${i + 1}</span><strong>${score}<small> par</small></strong></div>`).join("");
-    app.innerHTML = `<section class="shell"><header><span class="logo material-symbols-outlined">extension</span><div><p>SPELKVÄLL</p><h1>Emoji Memory</h1></div><button class="icon-btn material-symbols-outlined" data-home aria-label="Till spelhyllan">home</button></header>
+    app.innerHTML = `<section class="shell"><header><span class="logo material-symbols-outlined">extension</span><div><p>SPELKVÄLL</p><h1>Memory</h1></div><button class="icon-btn material-symbols-outlined" data-home aria-label="Till spelhyllan">home</button></header>
       <section class="play"><div class="game-info"><b>${levels[level][0]} · ${levels[level][1]}</b><span><i style="background:${colors[current]}"></i>Spelare ${current + 1}s tur</span></div><div class="scores">${scoreHtml}</div><div class="board ${level}">${cards.map(card => { const face = flipped.includes(card.id) || card.matched; return `<button class="memory ${face ? "flipped" : ""} ${card.matched ? "matched" : ""}" data-card="${card.id}" ${locked || card.matched ? "disabled" : ""} aria-label="${face ? `Kort ${card.emoji}` : "Vänd kort"}"><span><em class="back material-symbols-outlined">question_mark</em><em class="front">${card.emoji}</em></span></button>`; }).join("")}</div></section></section>`;
     app.querySelector("[data-home]").onclick = hub;
     app.querySelectorAll("[data-card]").forEach(button => button.onclick = () => flip(Number(button.dataset.card)));
