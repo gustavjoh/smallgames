@@ -1,0 +1,35 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 16px;
+  background: #f4f1eb;
+  color: #17202a;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+}
+.shell { max-width: 760px; margin: 0 auto; }
+header { border-bottom: 2px solid #17202a; margin-bottom: 24px; padding: 8px 0 16px; }
+header p { margin: 0; font-size: 16px; }
+h1, h2, p { margin-top: 8px; margin-bottom: 8px; }
+.intro { margin-bottom: 28px; }
+.game-tile { border: 2px solid #17202a; border-radius: 14px; background: #fff; padding: 20px; margin: 16px 0; box-shadow: 0 4px 0 #17202a; }
+button { display: block; width: 100%; min-height: 56px; margin: 12px 0; padding: 10px; border: 2px solid #17202a; border-radius: 10px; background: #fff; color: #17202a; font: inherit; cursor: pointer; }
+button:focus, button:active { outline: 4px solid #e5a23d; }
+.primary { background: #17202a; color: #fff; }
+.count-items { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 0; font-size: 36px; line-height: 1.2; min-height: 70px; }
+.number-bank { margin-top: 20px; }
+.number-button { font-size: 30px; min-height: 72px; }
+.count-correct { background: #b7e4b7; }
+.count-wrong { background: #f2b5b5; }
+.message { min-height: 28px; font-weight: bold; }
+.back { margin-top: 24px; background: #fff; }
+
+@media (min-width: 640px) {
+  body { padding: 40px 24px; font-size: 22px; }
+  header { margin-bottom: 36px; }
+  h1 { font-size: 46px; }
+  .game-tile { padding: 28px; }
+  .number-bank { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .number-button { margin: 0; min-height: 100px; font-size: 38px; }
+  .back { max-width: 260px; }
+}
