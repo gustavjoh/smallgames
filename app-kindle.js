@@ -1,6 +1,6 @@
 (function () {
   var app = document.getElementById("app");
-  var icons = ["*", "+", "o", "#"];
+  var icons = ["🍎", "⭐", "🐟", "🌸", "🚗", "🐱"];
   var amount = 1;
   var icon = "*";
   var locked = false;
