@@ -1,56 +1,11 @@
 (function () {
   var app = document.getElementById("app");
-  var icons = ["🍎", "⭐", "🐟", "🌸", "🚗", "🐱"];
-  var amount = 1;
-  var icon = "*";
-  var locked = false;
-
-  function randomAmount() { return 1 + Math.floor(Math.random() * 10); }
-  function answers() {
-    var values = [amount];
-    while (values.length < 3) {
-      var candidate = Math.max(1, Math.min(10, amount + Math.floor(Math.random() * 5) - 2));
-      if (values.indexOf(candidate) === -1) values.push(candidate);
-    }
-    return values.sort(function () { return Math.random() - 0.5; });
-  }
-  function home() {
-    app.innerHTML = '<main class="shell"><header><p>SMÅ SPEL</p><h1>Smallgames</h1></header>' +
-      '<section class="intro"><h2>Välj ett spel</h2><p>En enkel version för Kindle.</p></section>' +
-      '<article class="game-tile"><h2>Räkna</h2><p>Räkna symbolerna och välj rätt siffra.</p>' +
-      '<button class="primary" id="start">Starta Räkna</button></article></main>';
-    document.getElementById("start").onclick = newRound;
-  }
-  function newRound() {
-    amount = randomAmount();
-    icon = icons[Math.floor(Math.random() * icons.length)];
-    locked = false;
-    var items = "";
-    for (var i = 0; i < amount; i++) items += "<span>" + icon + "</span>";
-    var choices = answers();
-    var buttons = "";
-    for (var j = 0; j < choices.length; j++) buttons += '<button class="number-button" data-number="' + choices[j] + '">' + choices[j] + "</button>";
-    app.innerHTML = '<main class="shell"><header><p>SIFFERLEK</p><h1>Räkna</h1></header>' +
-      '<p>Hur många symboler ser du?</p><div class="count-items" aria-label="' + amount + ' symboler">' + items + '</div>' +
-      '<p>Välj rätt siffra:</p><div class="number-bank">' + buttons + '</div><p class="message" id="message"></p>' +
-      '<button class="back" id="back">Till startsidan</button></main>';
-    document.getElementById("back").onclick = home;
-    var all = document.querySelectorAll("[data-number]");
-    for (var k = 0; k < all.length; k++) all[k].onclick = choose;
-  }
-  function choose(event) {
-    if (locked) return;
-    var button = event.target;
-    var message = document.getElementById("message");
-    if (Number(button.getAttribute("data-number")) === amount) {
-      locked = true;
-      button.className += " count-correct";
-      message.innerHTML = "Rätt!";
-      setTimeout(newRound, 900);
-    } else {
-      button.className += " count-wrong";
-      message.innerHTML = "Försök igen.";
-    }
-  }
+  var pictures = ["apple", "star", "fish", "flower", "car", "cat"];
+  var cards = [], opened = [], matched = 0, locked = false;
+  function shuffle(items) { return items.sort(function () { return Math.random() - 0.5; }); }
+  function home() { app.innerHTML = '<main class="shell"><header><p>SMÅ SPEL</p><h1>Smallgames</h1></header><section class="intro"><h2>Välj ett spel</h2><p>En enkel version för Kindle.</p></section><article class="game-tile"><h2>Memory</h2><p>Hitta alla par.</p><button class="primary" id="start">Starta Memory</button></article></main>'; document.getElementById("start").onclick = start; }
+  function start() { cards = shuffle(pictures.concat(pictures).map(function (name, index) { return { name: name, id: index, open: false, found: false }; })); opened = []; matched = 0; locked = false; render(); }
+  function render() { var html = '<main class="shell"><header><p>MINNESLEK</p><h1>Memory</h1></header><p>Tryck på två kort och hitta lika bilder.</p><div class="memory-board">'; for (var i = 0; i < cards.length; i++) { var card = cards[i], visible = card.open || card.found; html += '<button class="memory-card ' + (visible ? "visible" : "") + '" data-id="' + card.id + '" aria-label="' + (visible ? card.name : "Dolt kort") + '">' + (visible ? '<img src="assets/' + card.name + '.svg" alt="' + card.name + '">' : '?') + '</button>'; } html += '</div><p class="message">Par hittade: ' + matched + ' av 6</p><button class="back" id="back">Till startsidan</button></main>'; app.innerHTML = html; document.getElementById("back").onclick = home; var buttons = document.querySelectorAll("[data-id]"); for (var j = 0; j < buttons.length; j++) buttons[j].onclick = choose; }
+  function choose(event) { if (locked || opened.length === 2) return; var card = cards.filter(function (item) { return item.id === Number(event.target.getAttribute("data-id")); })[0]; if (card.open || card.found) return; card.open = true; opened.push(card); render(); if (opened.length < 2) return; locked = true; if (opened[0].name === opened[1].name) { opened[0].found = true; opened[1].found = true; matched++; opened = []; locked = false; render(); } else { setTimeout(function () { opened[0].open = false; opened[1].open = false; opened = []; locked = false; render(); }, 700); } }
   home();
 }());
