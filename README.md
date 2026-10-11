@@ -12,6 +12,7 @@ eller byggmiljö krävs för att spela.
 - Memory – hitta flest par.
 - Stavning – stava enkla svenska emoji-ord för 3–6 år.
 - Räkna – räkna emojier och välj rätt siffra.
+- Tärning – kasta 1–5 tärningar och sortera dem i ordning.
 
 - `index.html` – spelhyllan
 - `app.js` – navigation mellan spelen
