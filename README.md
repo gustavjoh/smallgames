@@ -13,6 +13,7 @@ eller byggmiljö krävs för att spela.
 - Stavning – stava enkla svenska emoji-ord för 3–6 år.
 - Räkna – räkna emojier och välj rätt siffra.
 - Tärning – kasta 1–5 tärningar och sortera dem i ordning.
+- Pomperipossa – kom ihåg emojierna och gissa vilken som trollats bort.
 
 - `index.html` – spelhyllan
 - `app.js` – navigation mellan spelen
