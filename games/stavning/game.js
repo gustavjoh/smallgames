@@ -1,4 +1,4 @@
-const WORDS = [["☀️","SOL"],["🚗","BIL"],["🐱","KATT"],["🐟","FISK"],["🍦","GLASS"],["🐶","HUND"],["🌙","MÅNE"],["🍌","BANAN"],["🍎","ÄPPLE"],["🐸","GRODA"],["🐭","MUS"],["🦊","RÄV"],["🌸","ROS"],["🐮","KALV"],["🏠","HUS"],["🚀","RAKET"],["🦋","MAL"],["🍓","BÄR"],["🐳","VAL"],["🎈","BOLL"]];
+const WORDS = [["☀️","SOL"],["🚗","BIL"],["🐱","KATT"],["🐟","FISK"],["🍦","GLASS"],["🐶","HUND"],["🌙","MÅNE"],["🍌","BANAN"],["🍎","ÄPPLE"],["🐸","GRODA"],["🐭","MUS"],["🦊","RÄV"],["🌸","BLOMMA"],["🐮","KO"],["🏠","HUS"],["🚀","RAKET"],["🦋","FJÄRIL"],["🍓","BÄR"],["🐳","VAL"],["🎈","BALLONG"]];
 const DISTRACTORS = "ABCDEFGHIKLMNOPRSTUVYÅÄÖ".split("");
 const shuffle = (items) => [...items].sort(() => Math.random() - .5);
 
