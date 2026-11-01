@@ -14,6 +14,7 @@ eller byggmiljö krävs för att spela.
 - Räkna – räkna emojier och välj rätt siffra.
 - Tärning – kasta 1–5 tärningar och sortera dem i ordning.
 - Pomperipossa – kom ihåg emojierna och gissa vilken som trollats bort.
+- Skuggor – se en skugga och välj vilken emoji den tillhör.
 
 - `index.html` – spelhyllan
 - `app.js` – navigation mellan spelen
