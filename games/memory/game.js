@@ -3,7 +3,8 @@ const emojis = ["🍓", "🦊", "🌈", "🪐", "🍄", "🐳", "🦋", "🍉", 
 const colors = ["#ec5d78", "#5a83e8", "#9b73e9", "#e5a23d"];
 
 const shuffle = (items) => [...items].sort(() => Math.random() - .5);
-// Effektivitet: andelen vändningar en perfekt minnesspelare också hade gjort. 5 stjärnor = 100 %.
+// Effektivitet: andelen vändningar en perfekt minnesspelare också hade gjort. 5 stjärnor = 100 %, under 50 % blir det en apa.
+const MONKEY_BELOW = 50;
 const starsFor = (percent) => percent >= 100 ? 5 : percent >= 90 ? 4 : percent >= 75 ? 3 : percent >= 60 ? 2 : 1;
 const deck = (pairs) => shuffle(emojis.slice(0, pairs).flatMap((emoji, index) => [{ id: index * 2, emoji }, { id: index * 2 + 1, emoji }]));
 
@@ -55,16 +56,18 @@ export function memoryGame(app, hub) {
       if (cards.every(card => card.matched)) setTimeout(winner, 300);
     }, matched ? 620 : 950);
   };
+  const percentFor = (i) => flipsBy[i] ? Math.floor((flipsBy[i] - wastedBy[i]) / flipsBy[i] * 100) : null;
   const ratingsHtml = () => scores.map((_, i) => {
     const flips = flipsBy[i];
     if (!flips) return `<div class="rating" style="--color:${colors[i]}"><span>Spelare ${i + 1}</span><b>—</b><small>Inga vändningar</small></div>`;
-    const percent = Math.floor((flips - wastedBy[i]) / flips * 100), stars = starsFor(percent);
+    const percent = percentFor(i), stars = starsFor(percent);
+    if (percent < MONKEY_BELOW) return `<div class="rating" style="--color:${colors[i]}"><span>Spelare ${i + 1}</span><b class="monkey-badge" role="img" aria-label="En apa i stället för stjärnor">🐒</b><small>${percent} % effektivitet · ${wastedBy[i]} onödiga av ${flips} vändningar</small></div>`;
     return `<div class="rating" style="--color:${colors[i]}"><span>Spelare ${i + 1}</span><b aria-label="${stars} av 5 stjärnor">${"★".repeat(stars)}<i>${"★".repeat(5 - stars)}</i></b><small>${percent} % effektivitet · ${wastedBy[i]} onödiga av ${flips} vändningar</small></div>`;
   }).join("");
   const winner = () => {
     const best = Math.max(...scores), winners = scores.map((score, i) => score === best ? i + 1 : null).filter(Boolean);
     const modal = document.createElement("div"); modal.className = "modal";
-    modal.innerHTML = `<div><span class="material-symbols-outlined">emoji_events</span><p>OMGÅNGEN ÄR KLAR</p><h2>${winners.length === 1 ? `Spelare ${winners[0]} vinner!` : "Det blev oavgjort!"}</h2><p>${winners.length === 1 ? `${best} hittade par — snyggt spelat!` : `Spelare ${winners.join(" och ")} delar förstaplatsen.`}</p><div class="ratings">${ratingsHtml()}</div><button class="secondary">Inställningar</button><button class="primary">Spela igen</button></div>`;
+    modal.innerHTML = `<div><span class="material-symbols-outlined">emoji_events</span><p>OMGÅNGEN ÄR KLAR</p><h2>${winners.length === 1 ? `Spelare ${winners[0]} vinner!` : "Det blev oavgjort!"}</h2><p>${winners.length === 1 ? `${best} hittade par — snyggt spelat!` : `Spelare ${winners.join(" och ")} delar förstaplatsen.`}</p><div class="ratings">${ratingsHtml()}</div><button class="secondary">Inställningar</button><button class="primary">Spela igen</button></div>${scores.some((_, i) => flipsBy[i] && percentFor(i) < MONKEY_BELOW) ? `<i class="monkey-hop" aria-hidden="true"><b>🐒</b></i>` : ""}`;
     document.body.append(modal); modal.querySelector(".secondary").onclick = () => { modal.remove(); renderSetup(); }; modal.querySelector(".primary").onclick = () => { modal.remove(); start(); };
   };
   renderSetup();
